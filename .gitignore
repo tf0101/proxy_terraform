@@ -37,3 +37,4 @@ override.tf.json
 # example: *tfplan*
 
 .DS_Store
+proxy.drawio
