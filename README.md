@@ -2,6 +2,7 @@
 ## Description
 Automated construction of proxy server infrastructure using terraform
 The following configuration will be used, but only one instance will actually be launched (due to the free quota)
+
 ![proxy netimg drawio](https://user-images.githubusercontent.com/35088230/169131723-06b0b2c9-4d9e-4a61-878e-73e28ef4cdd9.png)
 
 
