@@ -78,12 +78,12 @@ terraform apply
 terraform init
 ```
 
-###　Configuration Confirmation
+### Configuration Confirmation
 ```bash
 terraform plan
 ```
 
-### construction
+### Construction
 ```bash
 terraform apply
 ```
