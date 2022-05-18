@@ -102,3 +102,4 @@ terraform destroy
 
 ## Generated EC2 IP
 The IP of the EC2 you created is written somewhere in terraform.tfstate  
+
