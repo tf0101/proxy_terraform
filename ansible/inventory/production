@@ -1,0 +1,10 @@
+[targethost]
+<server IP>
+
+# targethost_vars: Ansible実行時に利用する変数一覧
+[targethost:vars]
+ansible_ssh_port=22
+ansible_ssh_user=ec2-user
+ansible_ssh_private_key_file=../services/prod/ssh-key/rsa_key_ec2
+#ansible_become=yes
+host_key_checking=False
