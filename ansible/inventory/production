@@ -1,5 +1,5 @@
 [targethost]
-<server IP >
+<server IP test>
 
 # targethost_vars: Ansible実行時に利用する変数一覧
 [targethost:vars]
