@@ -15,7 +15,7 @@
 
 - name: unarchive privoxy
   unarchive:
-    src: /Users/tf0101/Desktop/terraform_devlop/var119_terraform/myproxy/ansible/roles/privoxy/files/privoxy-3.0.33-stable-src.tar.gz
+    src: ./roles/privoxy/files/privoxy-3.0.33-stable-src.tar.gz
     dest: /home/ec2-user/privoxy
 
 - name: yum install pkg
@@ -49,7 +49,7 @@
 
 - name: copy privoxy configu file
   copy:
-    src: /Users/tf0101/Desktop/terraform_devlop/var119_terraform/myproxy/ansible/roles/privoxy/files/config
+    src: ./roles/privoxy/files/config
     dest: /usr/local/etc/privoxy/config
     owner: privoxy
     group: privoxy
