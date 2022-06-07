@@ -8,7 +8,7 @@
 
 - name: unarchive tor
   unarchive:
-    src: /Users/tf0101/Desktop/terraform_devlop/var119_terraform/myproxy/ansible/roles/tor/files/tor-0.4.6.10.tar.gz
+    src: ./roles/tor/files/tor-0.4.6.10.tar.gz
     dest: /home/ec2-user/tor
 
 - name: yum install pkg
@@ -39,7 +39,7 @@
 
 - name: copy tor configu file
   copy:
-    src: /Users/tf0101/Desktop/terraform_devlop/var119_terraform/myproxy/ansible/roles/tor/files/torrc
+    src: ./roles/tor/files/torrc
     dest: /usr/local/etc/tor/torrc
     owner: root
     group: root
