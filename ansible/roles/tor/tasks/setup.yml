@@ -1,0 +1,51 @@
+- name: create tor dir
+  file:
+    path: ./tor
+    state: directory
+    owner: ec2-user
+    group: ec2-user
+    mode: '0775'
+
+- name: unarchive tor
+  unarchive:
+    src: /Users/tf0101/Desktop/terraform_devlop/var119_terraform/myproxy/ansible/roles/tor/files/tor-0.4.6.10.tar.gz
+    dest: /home/ec2-user/tor
+
+- name: yum install pkg
+  yum: 
+    name: '{{item}}'
+  with_items:
+    - gcc
+    - libevent
+    - libevent-devel
+    - zlib
+    - openssl
+    - openssl-devel
+  become: true
+
+- name: tor make
+  shell: |
+    ./configure
+    make
+  args:
+    chdir: /home/ec2-user/tor/tor-0.4.6.10
+
+- name: tor make install
+  shell:
+    make install
+  args:
+    chdir: /home/ec2-user/tor/tor-0.4.6.10
+  become: true
+
+- name: copy tor configu file
+  copy:
+    src: /Users/tf0101/Desktop/terraform_devlop/var119_terraform/myproxy/ansible/roles/tor/files/torrc
+    dest: /usr/local/etc/tor/torrc
+    owner: root
+    group: root
+    mode: '0644'
+  become: true
+
+- name: tor starting
+  shell:
+    /usr/local/bin/tor &
