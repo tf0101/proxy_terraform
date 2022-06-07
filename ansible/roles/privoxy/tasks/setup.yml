@@ -1,0 +1,62 @@
+- name: create privoxy user
+  user:
+    name: privoxy
+    createhome: no
+    shell: /sbin/nologin
+  become: true
+
+- name: create privoxy dir
+  file:
+    path: ./privoxy
+    state: directory
+    owner: ec2-user
+    group: ec2-user
+    mode: '0775'
+
+- name: unarchive privoxy
+  unarchive:
+    src: /Users/tf0101/Desktop/terraform_devlop/var119_terraform/myproxy/ansible/roles/privoxy/files/privoxy-3.0.33-stable-src.tar.gz
+    dest: /home/ec2-user/privoxy
+
+- name: yum install pkg
+  yum: 
+    name: '{{item}}'
+  with_items:
+    - automake
+    - autoconf
+  become: true
+
+- name: create privoxy build file
+  shell: |
+    autoheader
+    autoconf
+    ./configure --disable-toggle --disable-editor --disable-force
+  args:
+    chdir: /home/ec2-user/privoxy/privoxy-3.0.33-stable
+
+- name: privoxy make
+  shell: 
+    make
+  args:
+    chdir: /home/ec2-user/privoxy/privoxy-3.0.33-stable
+
+- name: privoxy make install
+  shell:
+    make install USER=privoxy GROUP=privoxy
+  args:
+    chdir: /home/ec2-user/privoxy/privoxy-3.0.33-stable
+  become: true
+
+- name: copy privoxy configu file
+  copy:
+    src: /Users/tf0101/Desktop/terraform_devlop/var119_terraform/myproxy/ansible/roles/privoxy/files/config
+    dest: /usr/local/etc/privoxy/config
+    owner: privoxy
+    group: privoxy
+    mode: '0660'
+  become: true
+
+- name: privoxy starting
+  shell:
+    /etc/init.d/privoxy start
+  become: true
