@@ -3,14 +3,28 @@
 Automated construction of proxy server infrastructure using terraform  
 The following configuration will be used, but only one instance will actually be launched (due to the free quota)  
 
-![proxy netimg drawio](https://user-images.githubusercontent.com/35088230/169131723-06b0b2c9-4d9e-4a61-878e-73e28ef4cdd9.png)
+![proxy drawio](https://user-images.githubusercontent.com/35088230/172534113-9d0ccae2-90cc-4075-bb83-993d77a8b744.png)
+
+## What you need
+
+Requires an aws account  
+
+Use tfenv to deploy terraform  
+```bash
+brew install tfenv
+tfenv install 1.1.9
+```
+
+```bash
+brew install ansible
+```
 
 
 ## Setup
 Creating credentialed files  
 
 ```bash
-cd ./prod/
+# services/prod/
 touch terraform.tfvars
 ```
 
@@ -30,7 +44,7 @@ sshkey_path = ""
 Create an access token in aws "aws_access_key" and "aws_secret_key  
 
 #### instance ami
-Specify the id of the created ami (put in OSS such as squid and configure the daemon at startup using systemctl, etc.)  
+A self-made image created on aws or the default ec2 image (ami-02c3627b04781eada)
 
 #### myip
 Specify IPs to allow access in the whitelist (e.g., your IP)  
@@ -57,7 +71,7 @@ Specify the file path of the public key generated for ssh access to ec2
 Create public-private key pairs with ssh-keygen  
 The following command creates a public key and a private key under the ssh-key directory.  
 ```bash
-cd ./prod/
+# services/prod/
 mkdir ssh-key
 cd ssh-key
 ssh-keygen -t rsa -f rsa_key_ec2
@@ -67,9 +81,10 @@ ssh-keygen -t rsa -f rsa_key_ec2
 In this case sshkey_path = ". /ssh-key/rsa_key_ec2.pub".  
 
 
-## construction
+## Resource Building
 
 ```bash
+# services/prod/
 terraform init
 terraform paln
 terraform apply
@@ -102,4 +117,45 @@ terraform destroy
 
 ## Generated EC2 IP
 The IP of the EC2 you created is written somewhere in terraform.tfstate  
+
+## ansible playbook
+Set up tor and privoxy with ansible  
+
+User→privoxy→tor→Internet  
+Create a pathway called  
+
+### EC2 IP set
+Get the IP of the EC2 created by terraform and write it to the following file  
+
+```
+# ansible/inventory/production
+
+[targethost]
+<server IP >
+```
+
+The IP address of the EC2 created by terraform is listed in the following file generated when the resource is created  
+```
+services/prod/terraform.tfstate
+```
+
+### Setup tor & privoxy
+Set up tor and privoxy with the following command  
+```bash
+# ansible/
+ansible-playbook site.yml
+```
+
+### operation check
+```bash
+curl --proxy http://<ec2 server ip>:8118 http://ipinfo.io
+```
+If an IP different from the EC2 IP address is displayed, OK  
+
+## Resource deletion
+If you want to delete all resources, execute the following command in the target directory  
+```bash
+# services/prod/
+terraform destroy
+```
 
