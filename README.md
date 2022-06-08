@@ -19,6 +19,10 @@ tfenv install 1.1.9
 brew install ansible
 ```
 
+```bash
+git clone https://github.com/tf0101/proxy_terraform.git
+```
+
 
 ## Setup
 Creating credentialed files  
