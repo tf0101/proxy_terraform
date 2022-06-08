@@ -159,3 +159,11 @@ If you want to delete all resources, execute the following command in the target
 terraform destroy
 ```
 
+## If you want to tinker with tor or privoxy settings
+Just rewrite the contents of the file in the following path  
+
+### tor
+ansible/roles/tor/files/torrc  
+
+### privoxy
+ansible/roles/privoxy/files/config  
